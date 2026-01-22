@@ -10,6 +10,10 @@ class MethodDecl(ASTNode):
     def __init__(self, name, ret, args, body):
         self.name = name; self.return_type = ret; self.args = args; self.body = body
 
+class MethodParam(ASTNode):
+    def __init__(self, param_type, name, is_array=False):
+        self.param_type = param_type; self.name = name; self.is_array = is_array
+
 class Assignment(ASTNode):
     def __init__(self, name, value):
         self.name = name
@@ -26,6 +30,12 @@ class BinaryOp(ASTNode):
 
 class UnaryOp(ASTNode): 
     def __init__(self, expr, op): self.expr = expr; self.op = op
+
+class FunctionCall(ASTNode):
+    def __init__(self, name, args): self.name = name; self.args = args
+
+class ReturnStatement(ASTNode):
+    def __init__(self, expr): self.expression = expr
 
 class ForLoop(ASTNode):
     def __init__(self, init, condition, update, body):

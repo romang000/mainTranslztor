@@ -15,6 +15,10 @@ class CSharpGenerator:
             left = self.resolve_val(node.left)
             right = self.resolve_val(node.right)
             return f"{left} {node.op} {right}"
+        elif isinstance(node, FunctionCall):
+            # Генерируем вызов функции для использования в выражениях
+            args_str = ", ".join(self.resolve(arg) if isinstance(arg, ASTNode) else str(arg) for arg in node.args)
+            return f"{node.name}({args_str})"
         return self.resolve_val(node)
 
     def resolve_val(self, val):
@@ -34,7 +38,12 @@ class CSharpGenerator:
         
         elif isinstance(node, MethodDecl):
             n = "Main" if node.name == "main" else node.name
-            self.add(f"public static {node.return_type} {n}(string[] args)"); self.add("{"); self.indent+=1
+            # Генерируем параметры метода
+            if n == "Main":
+                params = "string[] args"
+            else:
+                params = ", ".join(f"{arg.param_type} {arg.name}" for arg in node.args)
+            self.add(f"public static {node.return_type} {n}({params})"); self.add("{"); self.indent+=1
             for s in node.body: self.visit(s)
             self.indent-=1; self.add("}")
         
@@ -47,6 +56,15 @@ class CSharpGenerator:
         elif isinstance(node, Assignment): # <-- НОВЫЙ БЛОК
             val = self.resolve(node.value)
             self.add(f"{node.name} = {val};")
+        
+        elif isinstance(node, FunctionCall):
+            # Генерируем вызов функции
+            args_str = ", ".join(self.resolve(arg) if isinstance(arg, ASTNode) else str(arg) for arg in node.args)
+            self.add(f"{node.name}({args_str});")
+        
+        elif isinstance(node, ReturnStatement):
+            val = self.resolve(node.expression)
+            self.add(f"return {val};")
         
         elif isinstance(node, PrintStatement):
             val = self.resolve(node.expression)

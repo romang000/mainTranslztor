@@ -33,7 +33,7 @@ class Lexer:
             'public': TokenType.PUBLIC, 'class': TokenType.CLASS, 'static': TokenType.STATIC, 
             'void': TokenType.VOID, 'int': TokenType.TYPE, 'boolean': TokenType.TYPE, 
             'String': TokenType.TYPE, 'for': TokenType.FOR, 'if': TokenType.IF, 
-            'else': TokenType.ELSE, 'while': TokenType.WHILE, 'do': TokenType.DO
+            'else': TokenType.ELSE, 'while': TokenType.WHILE, 'do': TokenType.DO, 'return': TokenType.RETURN
         }
         
         # Хак для System.out.println
@@ -66,7 +66,7 @@ class Lexer:
                 return Token(TokenType.STRING, res, start)
             
             singles = {
-                '=': TokenType.ASSIGN, ';': TokenType.SEMI, '{': TokenType.LBRACE, '}': TokenType.RBRACE,
+                '=': TokenType.ASSIGN, ';': TokenType.SEMI, ',': TokenType.COMMA, '{': TokenType.LBRACE, '}': TokenType.RBRACE,
                 '(': TokenType.LPAREN, ')': TokenType.RPAREN, '[': TokenType.LBRACKET, ']': TokenType.RBRACKET
             }
             if self.current_char in singles:
@@ -83,6 +83,12 @@ class Lexer:
             if self.current_char == '+':
                 if self.peek() == '+': self.advance(); self.advance(); return Token(TokenType.INC, '++', start)
                 self.advance(); return Token(TokenType.PLUS, '+', start)
+            if self.current_char == '-':
+                self.advance(); return Token(TokenType.MINUS, '-', start)
+            if self.current_char == '*':
+                self.advance(); return Token(TokenType.MULT, '*', start)
+            if self.current_char == '/':
+                self.advance(); return Token(TokenType.DIV, '/', start)
             
             self.fail(f"Unexpected char '{self.current_char}'")
         

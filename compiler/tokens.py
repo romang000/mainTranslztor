@@ -3,15 +3,15 @@ from enum import Enum, auto
 class TokenType(Enum):
     PUBLIC = auto(); CLASS = auto(); STATIC = auto(); VOID = auto()
     TYPE = auto(); FOR = auto(); IF = auto(); ELSE = auto()
-    WHILE = auto(); DO = auto()
+    WHILE = auto(); DO = auto(); RETURN = auto()
     
     ID = auto(); NUMBER = auto(); STRING = auto()
     
     LBRACE = auto(); RBRACE = auto(); LPAREN = auto(); RPAREN = auto()
-    LBRACKET = auto(); RBRACKET = auto(); SEMI = auto(); ASSIGN = auto()
+    LBRACKET = auto(); RBRACKET = auto(); SEMI = auto(); COMMA = auto(); ASSIGN = auto()
     
     LT = auto(); LTE = auto(); GT = auto(); GTE = auto()
-    PLUS = auto(); INC = auto()
+    PLUS = auto(); MINUS = auto(); MULT = auto(); DIV = auto(); INC = auto()
     
     PRINT = auto(); EOF = auto()
 
